@@ -1,0 +1,12 @@
+{% extends "loggs/base.html" %}
+
+{% block content %}
+  <h3>Are you sure you want to log out? </h3>
+  
+  <form method="post" action="{% url 'users:logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Yes, log out</button>
+    <button type="submit" class="btn btn-danger"><a href="{% url 'loggs:index' %}" class="btn btn-link text-danger">Cancel</a></button>
+  </form>
+{% endblock content %}
+

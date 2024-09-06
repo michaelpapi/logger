@@ -1,0 +1,26 @@
+{% extends "loggs/base.html" %}
+
+{% block content %}
+
+{% block page_header %}
+
+  <div class="p-3 mb-4 bg-light border rounded-3">
+    
+    <div class="container-fluid py-4">
+      
+      <h1 class="display-3">Track your activities</h1>
+
+      <p class="lead">Make tracking your activities easier 
+        and keep a list of things you want to monitor along with your logs.</p>
+
+      {% if not user.is_authenticated %}  
+        <a class="btn btn-primary btn-lg mt-1" 
+        href="{% url 'users:register' %}">Register &raquo;</a>
+      {% endif %}
+      
+    </div>
+
+  </div>
+{% endblock page_header %}
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends "loggs/base.html" %}
+
+{% block page_header %}
+
+  <h1>LOGGS</h1>
+
+{% endblock page_header %}
+
+{% block content %}
+
+  <ul class="list-group border-bottom pb-2 mb-4">
+    {% for logg in loggs %}
+      <li class="list-group-item border-0">
+        <a href="{% url 'loggs:logg' logg.id%}">{{ logg.text }}</a>
+    </li>
+    {% empty %}
+      <li class="list-group-item border-0">No Loggs have been entered yet</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'loggs:new_logg' %}">Add a new logg</a>
+
+{% endblock content %}

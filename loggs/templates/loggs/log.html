@@ -1,0 +1,45 @@
+{% extends 'loggs/base.html' %}
+{% load static %}
+
+{% block page_header %}
+  <h1>{{ logg.text}}</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+  <p>
+    <a href="{% url 'loggs:new_log' logg.id %}">Add new log</a>
+  </p>
+  <ul>
+    {% for log in logs %}
+      <div class="card mb-3">
+        <!-- Card header with timestamp, edit and delete link -->
+        <h4 class="card-header">
+          {{ log.date_added|date:'M d, Y H:i' }}
+          <small><a href="{% url 'loggs:edit_log' log.id %}">
+            Edit Log</a></small>
+        </h4>
+        <!--Card body with entry log text-->
+        <div class="card-body">{{ log.text|linebreaks }}</div>
+            <form class="delete-form" action="{% url 'loggs:delete_log' log.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger delete-btn">Delete Log</button>
+            </form>
+      </div>
+    {% empty %}
+      <p>There are no entries for this Logg yet.</p>
+    {% endfor %}
+  </ul>
+  <p>
+    <form class="delete-form" action="{% url 'loggs:delete_logg' logg.id %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger delete-btn">Delete Logg</button>
+    </form>
+  </p>
+
+{% endblock content %}
+
+
+{% block extra_js%}
+<script src="{% static 'js/delete_logs.js' %}"></script>
+{% endblock extra_js %}
