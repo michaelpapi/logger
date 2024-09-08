@@ -23,4 +23,33 @@
   </div>
 {% endblock page_header %}
 
+{% if user.is_authenticated %}
+<div class="container mt-4">
+  <h2>Loggs</h2>
+
+  <div class="row">
+    {% for logg in loggs %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ logg.text }}</h5>
+            <p class="card-text">Added on: {{ logg.date_added|date:"F j, Y" }}</p>
+            <p class="card-text">Owner: {{ logg.owner.username }}</p>
+            {% if logg.public %}
+              <span class="badge bg-success">Public</span>
+            {% else %}
+              <span class="badge bg-secondary">Private</span>
+            {% endif %}
+              <a href="{% url 'loggs:logg' logg.id %}" class="btn btn-primary mt-2">View Logg</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">No loggs available.</p>
+    {% endfor %}
+{% endif %}
+  </div>
+</div>
+
+
 {% endblock content %}

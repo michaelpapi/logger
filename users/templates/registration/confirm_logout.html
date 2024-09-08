@@ -6,7 +6,7 @@
   <form method="post" action="{% url 'users:logout' %}">
     {% csrf_token %}
     <button type="submit" class="btn btn-primary">Yes, log out</button>
-    <button type="submit" class="btn btn-danger"><a href="{% url 'loggs:index' %}" class="btn btn-link text-danger">Cancel</a></button>
+    <a href="{% url 'loggs:index' %}" class="btn btn-danger">Cancel</a>
   </form>
 {% endblock content %}
 

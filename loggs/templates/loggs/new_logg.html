@@ -1,5 +1,6 @@
 {% extends "loggs/base.html" %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
 
 {% block content %}
   <div class="container mt-4">
@@ -7,7 +8,21 @@
 
     <form method="post">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    <!-- Render all fields except 'public' -->
+    {% for field in form %}
+      {% if field.name != 'public' %}
+        {% bootstrap_field field %}
+      {% endif %}
+    {% endfor %}
+  
+    <!-- Manually render the 'public' field -->
+    <div class="form-check">
+      {{ form.public|add_class:"form-check-input" }}
+      <label class="form-check-label" for="{{ form.public.id_for_label }}">
+        Public
+      </label>
+    </div>
+  
     <button type="submit" class="btn btn-primary">Add Logg</button>
     </form>
   </div>

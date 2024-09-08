@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponseNotAllowed
+from django.shortcuts import render, redirect
+from django.http import HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
@@ -10,12 +10,18 @@ from .forms import LoggForm, LogsForm
 
 def index(request):
     """Home page for loggs."""
-    return render(request, 'loggs/index.html')
+    if request.user.is_authenticated:
+        loggs = Logg.objects.filter(owner=request.user) | Logg.objects.filter(public=True)
+    else:
+        loggs = Logg.objects.filter(public=True)
+    context = {'loggs': loggs}
+
+    return render(request, 'loggs/index.html', context)
 
 
 def check_logg_owner(logg, user):
     if logg.owner != user:
-        return Http404
+        raise Http404
 
 @login_required
 def loggs(request):
@@ -29,7 +35,7 @@ def loggs(request):
 def logg(request, logg_id):
     logg = Logg.objects.get(id=logg_id)
     # Make sure the topic belongs to the current user.
-    check_logg_owner(logg, request.user)
+    #check_logg_owner(logg, request.user)
     
 
     logs = logg.logs.order_by("-date_added")
@@ -61,6 +67,7 @@ def new_logg(request):
 def new_log(request, logg_id):
     """Adds a new log under each Logg."""
     logg = Logg.objects.get(id=logg_id)
+    check_logg_owner(logg, request.user)
 
     if request.method != 'POST':
         # No data submitted, just creates blank page. 

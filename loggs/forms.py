@@ -5,8 +5,10 @@ from .models import Logg, Loggs
 class LoggForm(forms.ModelForm):
     class Meta:
         model = Logg
-        fields = ['text']
-        labels = {'text': ''}
+        fields = ['text', 'public']
+        widgets = {
+            'public': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
 
 
 class LogsForm(forms.ModelForm):
